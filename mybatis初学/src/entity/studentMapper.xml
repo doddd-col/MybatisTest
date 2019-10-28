@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="entity.personMapper">
+<mapper namespace="entity.studentMapper">
     <select id="querystudentBySno" resultType="entity.Student" parameterType="int">
          select * from student where sno = #{sno}
          </select>
 
+    <insert id="addstudent" parameterType="entity.Student">
+        insert into student(sno,name,age) values(#{sno},#{name},#{age})
+    </insert>
+
+    <update id="updatestudent" parameterType="entity.Student">
+        update student set name=#{name},age=#{age} where sno=#{sno}
+    </update>
+
+    <delete id="deletestudent" parameterType="int">
+        delete from student where sno=#{sno}
+    </delete>
+    <select id="querystudentall" resultType="entity.Student">
+        select * from student
+    </select>
 </mapper>
