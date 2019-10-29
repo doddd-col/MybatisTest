@@ -4,11 +4,21 @@ public class Student {
     private int sno;
     private String name;
     private int age;
+    private boolean sex;
 
-    public Student(int sno, String name, int age) {
+    public boolean isSex() {
+        return sex;
+    }
+
+    public void setSex(boolean sex) {
+        this.sex = sex;
+    }
+
+    public Student(int sno, String name, int age, boolean sex) {
         this.sno = sno;
         this.name = name;
         this.age = age;
+        this.sex = sex;
     }
 
     @Override
@@ -17,6 +27,7 @@ public class Student {
                 "sno=" + sno +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", sex=" + sex +
                 '}';
     }
 

@@ -15,4 +15,10 @@ public interface studentMapper {
     List<Student> querystudentall();
 
     Student querystudentBySno(int sno);
+
+    Student querystudentBySnoWithConverter(int sno);
+
+    void addstudentWithConverter(Student student);
+
+    List<Student> querystudentallWithConverter();
 }
