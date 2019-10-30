@@ -51,4 +51,37 @@
         <result property="age" column="age" />
         <result property="sex" column="sex" typeHandler="BooleanandIntConverter" />
     </resultMap>
+
+    <!--#{} 简单类型可以填任意值  ${} 简单类型必须填value (#{}自动添加''  ${}必须手动添加  )-->
+    <select id="querystudentByName" resultType="Student" parameterType="String">
+        select sno,name,age from student where name=#{name}
+    </select>
+    <!--${}适合动态查询  不需要加''    但是#{}可以防止sql注入-->
+    <select id="querystudentOrderByColumn" parameterType="String" resultType="Student">
+        select sno,name,age from student order by ${value} asc
+    </select>
+
+    <!--#{} 可以使用级联属性例如 address.homeaddress-->
+    <select id="querystudentByNameWithHashMap" parameterType="HashMap" resultType="Student">
+        select sno,name,age from student where name like '%${name}%' or sno = #{sno}
+    </select>
+
+    <!--通过存储过程 删除学生 存储过程基于现有的表   (sno in number)表示输入  deleteStuBysnoWithProceedure过程名称
+    create or replace procedure deleteStuBysnoWithProceedure(sno in number)
+    as
+    begin
+         delete from student where sno=sno;
+    end;
+    /
+
+    如果有输出 需要在sql 语句中  加入  into xxx
+    -->
+    <!--一般为  CALLABLE 类型--><!-- sno是参数  jdbcType参数类型 要找到java和jdbc映射的类型  mode是输入还是输出类型-->
+    <delete id="deleteStuBysnoWithProceedure" statementType="CALLABLE" parameterType="HashMap">
+        {
+            CALL deleteStuBysnoWithProceedure(
+                #{ss,jdbcType=INTEGER,mode=IN}
+            )
+        }
+    </delete>
 </mapper>

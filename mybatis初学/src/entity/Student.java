@@ -5,6 +5,7 @@ public class Student {
     private String name;
     private int age;
     private boolean sex;
+    private Address address;
 
     public boolean isSex() {
         return sex;
@@ -14,11 +15,18 @@ public class Student {
         this.sex = sex;
     }
 
-    public Student(int sno, String name, int age, boolean sex) {
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Student(int sno, String name, int age) {
         this.sno = sno;
         this.name = name;
         this.age = age;
-        this.sex = sex;
     }
 
     @Override

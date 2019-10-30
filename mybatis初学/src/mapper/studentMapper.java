@@ -3,6 +3,7 @@ package mapper;
 import entity.Student;
 
 import java.util.List;
+import java.util.Map;
 
 //接口名=namespace名 方法名=id值 参数=parametertype值 返回类型=resulttype
 public interface studentMapper {
@@ -21,4 +22,14 @@ public interface studentMapper {
     void addstudentWithConverter(Student student);
 
     List<Student> querystudentallWithConverter();
+
+    Student querystudentByName(String name);
+
+    List<Student> querystudentOrderByColumn(String column);
+
+    List<Student> querystudentByNameWithHashMap(Map<String,Object> map);
+
+
+    void deleteStuBysnoWithProceedure(Map<String,Object> map);
+
 }
