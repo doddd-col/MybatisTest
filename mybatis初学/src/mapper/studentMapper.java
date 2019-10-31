@@ -1,5 +1,6 @@
 package mapper;
 
+import entity.Grade;
 import entity.Student;
 
 import java.util.List;
@@ -31,5 +32,15 @@ public interface studentMapper {
 
 
     void deleteStuBysnoWithProceedure(Map<String,Object> map);
+
+    List<Student> querystudentByNameAndAgeWithSqlTag(Student student);
+
+    List<Student> querystudentWithGrade(Grade grade);
+
+    List<Student> querystudentWithArray(int[] num);
+
+    List<Student> querystudentWithList(List<Integer> list);
+
+    List<Student> querystudentWithStuArray(Student[] students);
 
 }

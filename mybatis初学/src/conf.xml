@@ -11,6 +11,7 @@
     <!--类型别名  不分大小写-->
     <typeAliases>
         <typeAlias type="entity.Student" alias="Student"/>
+        <typeAlias type="entity.Grade" alias="grade" />
     <!--将指定包下的类别名全都变成 类名
         <package name="entity"/>-->
     </typeAliases>

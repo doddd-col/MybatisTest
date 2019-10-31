@@ -1,4 +1,4 @@
-import entity.Person;
+import entity.Grade;
 import entity.Student;
 import mapper.studentMapper;
 import org.apache.ibatis.io.Resources;
@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -187,6 +188,96 @@ public class Testmybatis {
         sqlSession.commit();
     sqlSession.close();
     }
+
+    public static void querystudentByNameAndAgeWithSqlTag() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        Student student=new Student();
+        student.setName("ls");
+        student.setAge(21);
+        List<Student> student1 = mapper.querystudentByNameAndAgeWithSqlTag(student);
+        sqlSession.commit();
+        System.out.println(student1);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentWithGrade() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        List<Integer> list=new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        Grade grade=new Grade();
+        grade.setStunum(list);
+
+        List<Student> student1 = mapper.querystudentWithGrade(grade);
+        sqlSession.commit();
+        System.out.println(student1);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentWithArray() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+
+        int []num={1,2};
+        List<Student> student1 = mapper.querystudentWithArray(num);
+        sqlSession.commit();
+        System.out.println(student1);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentWithList() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+
+        List<Integer> list=new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        List<Student> student1 = mapper.querystudentWithList(list);
+        sqlSession.commit();
+        System.out.println(student1);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentWithStuArray() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        Student student1=new Student();
+        student1.setSno(1);
+        Student student2=new Student();
+        student2.setSno(2);
+        Student[] students=new Student[]{student1,student2};
+        List<Student> student = mapper.querystudentWithStuArray(students);
+        sqlSession.commit();
+        System.out.println(student);
+
+        sqlSession.close();
+    }
     public static void main(String[] args) throws IOException {
         //加载mybatis配置文件  获取一个缓冲流
 //        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
@@ -214,6 +305,16 @@ public class Testmybatis {
 //        querystudentByName();
 //        querystudentOrderByColumn();
 //        querystudentByNameWithHashMap();
-        deleteStuBysnoWithProceedure();
+//        deleteStuBysnoWithProceedure();
+
+//        querystudentByNameAndAgeWithSqlTag();
+//        querystudentWithGrade();
+//        querystudentWithArray();
+//        querystudentWithList();
+        querystudentWithStuArray();
+
     }
+
+
+
 }

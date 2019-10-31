@@ -84,4 +84,83 @@
             )
         }
     </delete>
+
+
+    <!--  可以用1=1 或者<where>标签处理（只能处理第一个and）  第一个and-->
+    <select id="querystudentByNameAndAgeWithSqlTag" resultType="Student" parameterType="Student">
+        select sno,name,age from student
+        <where>
+            <if test="name!=null and name !=''">
+                and name=#{name}
+            </if>
+            <if test="age!=null and age!=0">
+                and age=#{age}
+            </if>
+        </where>
+    </select>
+
+    <!--  foreach迭代  数组 集合 属性(类里面的List) 都可以迭代   属性对象-->
+    <select id="querystudentWithGrade" resultType="Student" parameterType="grade">
+        select sno,name,age from student
+        <where>
+            <if test="stunum!=null and stunum.size>0">
+                sno in (
+                <!--   collection是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数 要将item的参数放到#{}里面进行迭代而不是用grade属性里面的对象  也可以通过open和close来写左右两边语句-->
+                <foreach collection="stunum" separator="," item="grade">
+                    #{grade}
+                 </foreach>
+                 )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放入数组中 无论传递什么参数名 数组规定用array                                      数组-->
+    <select id="querystudentWithArray" resultType="Student" parameterType="int[]">
+        select sno,name,age from student
+        <where>
+            <if test="array!=null and array.length>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="array" separator="," item="g">
+                    #{g}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放入list中 无论传递什么参数名 list                                    list-->
+    <select id="querystudentWithList" resultType="Student" parameterType="list">
+        select sno,name,age from student
+        <where>
+            <if test="list!=null and list.size>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="list" separator="," item="sno">
+                    #{sno}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放到对象数组 array是简单类型的  对象不能用   参数类型用对象或Object[]-->
+    <select id="querystudentWithStuArray" resultType="Student" parameterType="Student">
+        select sno,name,age from student
+        <include refid="objectarraylist"></include>
+    </select>
+
+    <!--sql标签   对重复的进行引用-->
+    <sql id="objectarraylist">
+        <where>
+            <if test="array!=null and array.length>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="array" separator="," item="student">
+                    #{student.sno}
+                </foreach>
+                )
+            </if>
+        </where>
+    </sql>
 </mapper>
