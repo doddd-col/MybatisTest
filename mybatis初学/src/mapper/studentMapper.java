@@ -1,7 +1,6 @@
 package mapper;
 
-import entity.Grade;
-import entity.Student;
+import entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -42,5 +41,13 @@ public interface studentMapper {
     List<Student> querystudentWithList(List<Integer> list);
 
     List<Student> querystudentWithStuArray(Student[] students);
+
+    StudentBusiness querystudentByBusiOO(int sno);
+
+    Student querystudentBysnoOO(int sno);
+
+    StudentClass queryClassStudent(int classid);
+
+    StudentCard query(int sno);
 
 }

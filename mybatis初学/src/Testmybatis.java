@@ -1,5 +1,4 @@
-import entity.Grade;
-import entity.Student;
+import entity.*;
 import mapper.studentMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -278,6 +277,68 @@ public class Testmybatis {
 
         sqlSession.close();
     }
+
+    public static void querystudentByBusiOO() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int sno=1;
+        StudentBusiness student = mapper.querystudentByBusiOO(sno);
+        sqlSession.commit();
+        System.out.println(student);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentBysnoOO() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int sno=2;
+        Student student = mapper.querystudentBysnoOO(sno);
+        sqlSession.commit();
+        System.out.println(student);
+
+        sqlSession.close();
+    }
+
+    public static void queryClassStudent() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int classid=175;
+        StudentClass student = mapper.queryClassStudent(classid);
+        sqlSession.commit();
+        System.out.println(student);
+
+        sqlSession.close();
+    }
+
+    public static void query() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int sno=2;
+        StudentCard student = mapper.query(sno);
+        sqlSession.commit();
+        System.out.println(student);
+
+        sqlSession.close();
+    }
+
+
     public static void main(String[] args) throws IOException {
         //加载mybatis配置文件  获取一个缓冲流
 //        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
@@ -311,9 +372,15 @@ public class Testmybatis {
 //        querystudentWithGrade();
 //        querystudentWithArray();
 //        querystudentWithList();
-        querystudentWithStuArray();
+//        querystudentWithStuArray();
+//        querystudentByBusiOO();
+        querystudentBysnoOO();
+//        queryClassStudent();
+
+//        query();
 
     }
+
 
 
 

@@ -163,4 +163,57 @@
             </if>
         </where>
     </sql>
+
+    <!--两张表进行关联  inner join 将两个表接在一起 on是关联关系   利用业务扩展类实现一对一-->
+    <select id="querystudentByBusiOO" resultType="entity.StudentBusiness" parameterType="int">
+        select s.*,c.* from student s inner join studentcard c
+        on s.cardid=c.cardid
+        where s.sno=#{sno}
+    </select>
+
+    <!--resultMap 实现一对一  两个类通过成员变量联系-->
+    <select id="querystudentBysnoOO" resultMap="studentandcar" parameterType="int">
+        select *from student where sno=#{sno}
+    </select>
+
+    <resultMap id="studentandcar" type="Student">
+        <!--学生信息  简单类型-->
+        <id property="sno" column="sno"></id>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+
+        <!--一对一，对象成员用association映射 ， JavaType指定该属性的类型-->
+        <association property="card" javaType="entity.StudentCard">
+            <id property="cardid" column="cardid" />
+            <result property="cardinfo" column="cardinfo" />
+        </association>
+    </resultMap>
+
+    <!--一对多-->
+    <select id="queryClassStudent" resultMap="class_student_map" parameterType="int">
+        select c.*,s.* from student s inner join studentclass c
+        on c.classid=s.classid
+        where c.classid=#{classid}
+    </select>
+    <resultMap id="class_student_map" type="entity.StudentClass">
+        <!--因为type的主类是班级 班级包含学生 所以先配置班级的信息-->
+        <id property="classid" column="classid" />
+        <result property="classname" column="classname" />
+        <!--配置成员属性学生 ， 一对多； 属性类型：javaType  属性的元素类型：ofType-->
+        <collection property="studentList" ofType="Student">
+            <id property="sno" column="sno" />
+            <result property="name" column="name" />
+            <result property="age" column="age" />
+            <!--如果还有 对象可以接着配-->
+            <association property="card" javaType="entity.StudentCard">
+                <id property="cardid" column="cardid" />
+                <result property="cardinfo" column="cardinfo" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="query" resultType="entity.StudentCard" parameterType="int">
+        select *from studentcard where cardid =#{sno}
+    </select>
 </mapper>

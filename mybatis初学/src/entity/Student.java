@@ -6,6 +6,15 @@ public class Student {
     private int age;
     private boolean sex;
     private Address address;
+    private StudentCard card;
+
+    public StudentCard getCard() {
+        return card;
+    }
+
+    public void setCard(StudentCard card) {
+        this.card = card;
+    }
 
     public boolean isSex() {
         return sex;
@@ -36,6 +45,8 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", sex=" + sex +
+                ", address=" + address +
+                ", card=" + card +
                 '}';
     }
 
