@@ -1,4 +1,5 @@
 import entity.*;
+import mapper.classMapper;
 import mapper.studentMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -300,8 +301,9 @@ public class Testmybatis {
         SqlSession sqlSession = build.openSession();
 
         studentMapper mapper = sqlSession.getMapper(studentMapper.class);
-        int sno=2;
+        int sno=1;
         Student student = mapper.querystudentBysnoOO(sno);
+
         sqlSession.commit();
         System.out.println(student);
 
@@ -334,6 +336,44 @@ public class Testmybatis {
         StudentCard student = mapper.query(sno);
         sqlSession.commit();
         System.out.println(student);
+
+        sqlSession.close();
+    }
+
+    public static void querystudentCardlazyload() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int sno=2;
+        Student student = mapper.querystudentCardlazyload(sno);
+        System.out.println(student.getSno()+"----"+student.getAge()+"-----"+student.getName());
+        System.out.println(student.getCard().getCardid()+"===="+student.getCard().getCardinfo());
+        sqlSession.commit();
+
+
+        sqlSession.close();
+    }
+
+    public static void queryClass() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        classMapper mapper = sqlSession.getMapper(classMapper.class);//接口是什么  就返回什么
+        int classid=175;
+        StudentClass classidandinfo = mapper.queryClass(classid);
+
+        System.out.println(classidandinfo.getClassid()+"----"+classidandinfo.getClassname());
+
+        for(Student student:classidandinfo.getStudentList()){
+            System.out.println(student.getSno()+"==="+student.getName()+"==="+student.getAge());
+        }
+        sqlSession.commit();
+
 
         sqlSession.close();
     }
@@ -374,10 +414,12 @@ public class Testmybatis {
 //        querystudentWithList();
 //        querystudentWithStuArray();
 //        querystudentByBusiOO();
-        querystudentBysnoOO();
+//        querystudentBysnoOO();
 //        queryClassStudent();
 
+//        querystudentCardlazyload();
 //        query();
+        queryClass();
 
     }
 

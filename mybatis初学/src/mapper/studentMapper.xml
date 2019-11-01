@@ -171,12 +171,14 @@
         where s.sno=#{sno}
     </select>
 
-    <!--resultMap 实现一对一  两个类通过成员变量联系-->
-    <select id="querystudentBysnoOO" resultMap="studentandcar" parameterType="int">
-        select *from student where sno=#{sno}
+    <!--resultMap 实现一对一  两个类通过成员变量联系====  之前因为没把两个表拼接 所以cardinfo一直未null   -->
+    <select id="querystudentBysnoOO" resultMap="StudentCrad" parameterType="int">
+        select s.*,c.* from student s inner join studentcard c
+        on s.cardid=c.cardid
+        where s.sno=#{sno}
     </select>
 
-    <resultMap id="studentandcar" type="Student">
+    <resultMap id="StudentCrad" type="Student">
         <!--学生信息  简单类型-->
         <id property="sno" column="sno"></id>
         <result property="name" column="name" />
@@ -197,7 +199,7 @@
         where c.classid=#{classid}
     </select>
     <resultMap id="class_student_map" type="entity.StudentClass">
-        <!--因为type的主类是班级 班级包含学生 所以先配置班级的信息-->
+        <!--因为type的主类是班级 班级包含学生 所以先配置班级的信息 -->
         <id property="classid" column="classid" />
         <result property="classname" column="classname" />
         <!--配置成员属性学生 ， 一对多； 属性类型：javaType  属性的元素类型：ofType-->
@@ -205,7 +207,7 @@
             <id property="sno" column="sno" />
             <result property="name" column="name" />
             <result property="age" column="age" />
-            <!--如果还有 对象可以接着配-->
+            <!--如果还有 对象可以接着配   因为没有card表所以cardinfo 一直未null  但是student有cardid所有一直有值-->
             <association property="card" javaType="entity.StudentCard">
                 <id property="cardid" column="cardid" />
                 <result property="cardinfo" column="cardinfo" />
@@ -213,7 +215,35 @@
         </collection>
     </resultMap>
 
-    <select id="query" resultType="entity.StudentCard" parameterType="int">
+    <select id="query" resultMap="card" parameterType="int">
         select *from studentcard where cardid =#{sno}
+    </select>
+    <resultMap id="card" type="entity.StudentCard">
+        <id property="cardid" column="cardid" />
+        <result property="cardinfo" column="cardinfo" />
+    </resultMap>
+
+
+    <!--resultMap 实现一对一  两个类通过成员变量联系  延迟加载lazyload   记得要去conf.xml开启延迟加载 和 关闭立即加载-->
+    <select id="querystudentCardlazyload" resultMap="querystudentOOlazyload" parameterType="int">
+        select *from student where sno=#{sno}
+    </select>
+
+    <resultMap id="querystudentOOlazyload" type="Student">
+        <!--学生信息  简单类型-->
+        <id property="sno" column="sno"></id>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+
+        <!--一对一，对象成员用association映射 ， JavaType指定该属性的类型-->
+        <association property="card" javaType="entity.StudentCard" select="mapper.studentCard.querystudentCard" column="cardid">
+        <!--利用延迟加载 从studentCard调用select-->
+        </association>
+    </resultMap>
+
+    <!--一对多  延迟加载-->
+    <select id="queryStudents" resultType="Student" parameterType="int">
+        select *from student where classid=#{id}`````````````````
     </select>
 </mapper>

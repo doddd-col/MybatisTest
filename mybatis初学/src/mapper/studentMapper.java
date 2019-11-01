@@ -50,4 +50,7 @@ public interface studentMapper {
 
     StudentCard query(int sno);
 
+
+    Student querystudentCardlazyload(int sno);
+
 }

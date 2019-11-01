@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.classMapper">
+
+
+    <select id="queryClass" resultMap="studentInclass" parameterType="int">
+        select * from studentclass where classid=#{id}
+    </select>
+
+    <resultMap id="studentInclass" type="entity.StudentClass">
+        <id property="classid" column="classid" />
+        <result property="classname" column="classname" />
+
+        <!--记住 多对多 类型是ofType-->
+        <collection property="studentList" ofType="Student" select="mapper.studentMapper.queryStudents" column="classid" />
+    </resultMap>
+</mapper>
