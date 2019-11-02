@@ -325,6 +325,7 @@ public class Testmybatis {
         sqlSession.close();
     }
 
+    //缓存只对查询有用  一级缓存 commit会清空sqlSession中的缓存   可以减少打开关闭数据库的性能损耗
     public static void query() throws IOException {
         Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
         //build第二个参数可以指定运行环境
@@ -334,10 +335,41 @@ public class Testmybatis {
         studentMapper mapper = sqlSession.getMapper(studentMapper.class);
         int sno=2;
         StudentCard student = mapper.query(sno);
-        sqlSession.commit();
+
+        //mybatis一级缓存  在同一个sqlSession中
+        StudentCard card=mapper.query(sno);
+
         System.out.println(student);
+        System.out.println(card);
 
         sqlSession.close();
+    }
+
+    //mybatis二级缓存    用一个namespace都有效  不管是什么mapper对象 只要调用同一个namespace   如果多个xml文件共享一个namespace也共享二级缓存
+    public static void query_twocache() throws IOException {
+        Reader resourceAsReader = Resources.getResourceAsReader("conf.xml");
+        //build第二个参数可以指定运行环境
+        SqlSessionFactory build = new SqlSessionFactoryBuilder().build(resourceAsReader);
+        SqlSession sqlSession = build.openSession();
+
+        studentMapper mapper = sqlSession.getMapper(studentMapper.class);
+        int sno=2;
+        StudentCard student = mapper.query(sno);
+        //一般在 commit的时候将缓存序列化
+       sqlSession.commit();
+        //在同一个namespace中 调用     记得开启二级缓存          二级缓存需要将类序列化  因为二级缓存需要将缓存序列化存到硬盘中  同一个namespace生成的不同mapper调用时将二级缓存反序列化 变成可查询信息
+        studentMapper mapper2 =sqlSession.getMapper(studentMapper.class);
+
+        StudentCard query = mapper2.query(sno);
+        studentMapper mapper3 =sqlSession.getMapper(studentMapper.class);
+
+        StudentCard query3 = mapper2.query(sno);
+        System.out.println(student);
+        System.out.println(query);
+        System.out.println(query3);
+       //Cache Hit Ratio [mapper.studentMapper]: 0.5  代表缓存命中率  第一次中没有 0.0  第二次查询有 0.5 第三次 0.66666
+         sqlSession.close();
+
     }
 
     public static void querystudentCardlazyload() throws IOException {
@@ -419,8 +451,9 @@ public class Testmybatis {
 
 //        querystudentCardlazyload();
 //        query();
-        queryClass();
+//        queryClass();
 
+        query_twocache();
     }
 
 

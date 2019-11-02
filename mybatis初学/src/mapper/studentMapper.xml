@@ -4,6 +4,8 @@
 
 <mapper namespace="mapper.studentMapper">
 
+    <!--开启对缓存的支持  在maybatis3中  只需要在namespace中开启支持<cache />   不用在setting中开启缓存-->
+    <cache />
     <select id="querystudentBySno" resultType="Student" parameterType="int">
          select * from student where sno = #{sno}
          </select>
@@ -244,6 +246,6 @@
 
     <!--一对多  延迟加载-->
     <select id="queryStudents" resultType="Student" parameterType="int">
-        select *from student where classid=#{id}`````````````````
+        select *from student where classid=#{id}
     </select>
 </mapper>

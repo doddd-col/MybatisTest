@@ -1,6 +1,9 @@
 package entity;
 
-public class Student {
+import java.io.Serializable;
+
+//开启二级缓存  需要将其序列化  否则报错Error serializing object
+public class Student implements Serializable {
     private int sno;
     private String name;
     private int age;
