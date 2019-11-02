@@ -4,8 +4,13 @@
 
 <mapper namespace="mapper.studentMapper">
 
-    <!--开启对缓存的支持  在maybatis3中  只需要在namespace中开启支持<cache />   不用在setting中开启缓存-->
-    <cache />
+    <!--mybatis自带二级缓存开启方法   开启对缓存的支持 声明缓存 在maybatis3中  只需要在namespace中开启支持<cache />   不用在setting中开启缓存
+    <cache />-->
+
+    <!--开启Ehcache缓存-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+        <!--可以在这里覆盖Ehcache里面的值-->
+    </cache>
     <select id="querystudentBySno" resultType="Student" parameterType="int">
          select * from student where sno = #{sno}
          </select>

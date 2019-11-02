@@ -355,7 +355,10 @@ public class Testmybatis {
         studentMapper mapper = sqlSession.getMapper(studentMapper.class);
         int sno=2;
         StudentCard student = mapper.query(sno);
-        //一般在 commit的时候将缓存序列化
+        //在select 标签中 增加属性useCache="false" 禁用二级缓存  默认是true
+        //在select 标签中 增加属性flushCache="true" 每次调用select自动清空一级二级缓存 默认是false
+        //commit会清理一级和二级缓存 但是二级缓存中不能是自身查询commit  如果是 commit的时候将缓存序列化
+
        sqlSession.commit();
         //在同一个namespace中 调用     记得开启二级缓存          二级缓存需要将类序列化  因为二级缓存需要将缓存序列化存到硬盘中  同一个namespace生成的不同mapper调用时将二级缓存反序列化 变成可查询信息
         studentMapper mapper2 =sqlSession.getMapper(studentMapper.class);
@@ -368,7 +371,7 @@ public class Testmybatis {
         System.out.println(query);
         System.out.println(query3);
        //Cache Hit Ratio [mapper.studentMapper]: 0.5  代表缓存命中率  第一次中没有 0.0  第二次查询有 0.5 第三次 0.66666
-         sqlSession.close();
+        sqlSession.close();
 
     }
 
