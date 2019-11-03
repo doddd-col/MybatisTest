@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--加载配置文件d.properties-->
+    <bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="Locations">
+            <array>
+                <value>classpath:db.properties</value>
+            </array>
+        </property>
+
+    </bean>
+
+    <!--将mybatis配置的数据源 转到Spring配置-->
+    <bean id="datasource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${driverClassName}"></property>
+        <property name="url" value="${url}"></property>
+        <property name="username" value="${username}"></property>
+        <property name="password" value="${password}"></property>
+        <!--maxTotal 最大连接数   maxIdle 最大空闲数：即使没人使用也能保持200个连接-->
+        <property name="maxTotal" value="${maxTotal}"></property>
+        <property name="maxIdle" value="${maxIdle}"></property>
+
+    </bean>
+
+    <!--在SpringIOC容器中 创建mybatis的核心类SqlSessionFactory   记得将SqlSessionFactory交给继承了SqlSessionDaoSupport的Dao层-->
+    <bean class="org.mybatis.spring.SqlSessionFactoryBean" id="SqlSessionFactory">
+        <!--给mybatis配置数据源-->
+        <property name="dataSource" ref="datasource" />
+        <!--加载mybatis配置文件
+        <property name="configLocation" value="classpath:conf.xml" />-->
+        <!--不加载mybatis配置文件  直接加载映射文件-->
+        <property name="mapperLocations" value="mapper/StudentMapper.xml" />
+    </bean>
+
+    <!--第一种产生动态mapper的方式  通过Dao层继承SqlSessionDaoSupport类实现
+    <bean id="studentDao" class="dao.impl.StudentDaoImpl">
+        要将配置好的SqlSessionFactory 传到Dao层(mapper)
+        <property name="sqlSessionFactory" ref="SqlSessionFactory" />
+    </bean>-->
+    <!--第二种 省略Dao层  缺点每个mapper配一次
+    <bean id="studentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+
+        <property name="mapperInterface" value="mapper.StudentMapper" />
+        <property name="sqlSessionFactory" ref="SqlSessionFactory" />
+    </bean>  -->
+
+    <!--第三种方式  批量产生多个mapper 每个mapper在SpringIOC容器中的ID默认就是接口名  (但是首字母小写)-->
+    <bean id="mappers" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定扫描的包-->
+        <property name="basePackage" value="mapper" />
+        <!--sqlSessionFactoryBeanName的返回值是字符串 所以用value-->
+        <property name="sqlSessionFactoryBeanName" value="SqlSessionFactory" />
+    </bean>
+
+    <bean id="studentservice" class="service.impl.StudentServiceImpl">
+        <!--第三种方式引用是接口名小写-->
+        <property name="mapper" ref="studentMapper" />
+    </bean>
+
+
+</beans>
