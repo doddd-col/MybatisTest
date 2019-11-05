@@ -46,5 +46,17 @@
     schooladdress:<input name="address.schooladdress" />
     <input type="submit" value="ObjectProperties" />
   </form>
+
+  <a href="handler/testModelAndView">testModelAndView</a>
+
+  <a href="handler/testModelMap">testModelMap</a>
+  <a href="handler/testMap">testMap</a>
+  <a href="handler/testModel">testModel</a>
   </body>
+
+  <form action="/SpringMvc_war_exploded/handler/testModelAttribute" method="post" >
+    id:<input type="hidden" name="id" value="3" />
+    name:<input type="text" name="name" />
+    <input type="submit" value="ModelAttribute" />
+  </form>
 </html>

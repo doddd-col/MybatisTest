@@ -11,6 +11,17 @@
     <title>Title</title>
 </head>
 <body>
-    welcome to spring mvc
+    welcome to spring mvc<br />
+    ${requestScope.student.id}-${requestScope.student.name}-${requestScope.student.address.homeaddress}-${requestScope.student.address.schooladdress}<br />
+    ${requestScope.student2.id}-${requestScope.student2.name}-${requestScope.student2.address.homeaddress}-${requestScope.student2.address.schooladdress}<br />
+    ${requestScope.student3.id}-${requestScope.student3.name}-${requestScope.student3.address.homeaddress}-${requestScope.student3.address.schooladdress}<br />
+    ${requestScope.student4.id}-${requestScope.student4.name}-${requestScope.student4.address.homeaddress}-${requestScope.student4.address.schooladdress}<br />
+
+-----Session<br />
+    ${sessionScope.student.id}-${sessionScope.student.name}-${sessionScope.student.address.homeaddress}-${sessionScope.student.address.schooladdress}<br />
+    ${sessionScope.student2.id}-${sessionScope.student2.name}-${sessionScope.student2.address.homeaddress}-${sessionScope.student2.address.schooladdress}<br />
+    ${sessionScope.student3.id}-${sessionScope.student3.name}-${sessionScope.student3.address.homeaddress}-${sessionScope.student3.address.schooladdress}<br />
+    ${sessionScope.student4.id}-${sessionScope.student4.name}-${sessionScope.student4.address.homeaddress}-${sessionScope.student4.address.schooladdress}<br />
+
 </body>
 </html>
