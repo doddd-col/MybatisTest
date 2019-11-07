@@ -2,14 +2,15 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
-
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 ">
 
     <!--开启扫描器 扫描有注解的包-->
@@ -21,4 +22,38 @@
         <property name="prefix" value="/views/" />
         <property name="suffix" value=".jsp" />
     </bean>
+
+    <!--mvc标签 通过view直接访问  不经过Controller-->
+    <mvc:view-controller path="handler/testMvcViewController" view-name="success" />
+    <!--是SpringMVC的基础配置  很多功能需要通过该注解来协调-->
+    <mvc:annotation-driven></mvc:annotation-driven>
+    <!--让SpringMVC 接受一个请求时 没有对应的@Requestmapping(Servlet) 会自动使用默认的Servlet-->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+
+<!--这是前端数据的类型转换器   Mybatis有后端数据库的类型转换器-->
+    <!--1.将自定义的类型转换器 放到IOC容器中-->
+    <bean id="Converter" class="MyConverter" />
+
+    <!--2.将Converter再纳入SpringMVC提供的转换器Bean中
+    <bean id="ConversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <ref bean="Converter" />
+            </set>
+        </property>
+    </bean>
+-->
+
+    <!--该bean既可以实现格式化  也可以实现类型转换-->
+    <bean class="org.springframework.format.support.FormattingConversionServiceFactoryBean" id="ConversionService">
+        <property name="converters">
+            <set>
+                <ref bean="Converter" />
+            </set>
+        </property>
+    </bean>
+    <!--3.将ConversionService注册到annotation-driven中    注解驱动-->
+    <mvc:annotation-driven conversion-service="ConversionService"></mvc:annotation-driven>
+
 </beans>

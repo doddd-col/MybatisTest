@@ -1,10 +1,34 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<script type="application/javascript" src="js/jquery-3.4.1.js"></script>
+<script>
+  $(document).ready(function (){
+    $("#testJson").click(function (){
+        //通过ajax请求SpringMVC
+      $.post(
+              "handler/testJson",//服务器地址
+              //{name:"zs"}请求参数
+              function (result) {//回调函数
+                  for(var i=0;i<result.length;i++){
+                    alert(result[i].id+"-"+result[i].name);
+                }
+              }
+      )
+    }
+
+    )
+
+  })
+
+</script>
 <html>
   <head>
     <title>$Title$</title>
   </head>
   <body>
+
+  <input type="button" value="testJson" id="testJson">
+
   <a href="handler/welcome">welcome</a>
   <form action="handler/welcome" method="post" >
     <input type="submit" value="post" />
@@ -58,5 +82,21 @@
     id:<input type="hidden" name="id" value="3" />
     name:<input type="text" name="name" />
     <input type="submit" value="ModelAttribute" />
+  </form>
+
+  <a href="handler/testMvcViewController">testMvcController</a>
+
+
+  <form action="/SpringMvc_war_exploded/handler/testConverter" method="post" >
+    学生信息:<input type="text" name="StudentInfo"/>
+    <input type="submit" value="testConverter" />
+  </form>
+
+
+  <form action="/SpringMvc_war_exploded/handler/testDateTimeFormat" method="post" >
+    ID:<input type="text" name="id"/>
+    姓名:<input name="name">
+    生日:<input name="birthday">
+    <input type="submit" value="testDateTimeFormat" />
   </form>
 </html>

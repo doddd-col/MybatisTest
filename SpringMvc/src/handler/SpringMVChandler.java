@@ -5,9 +5,14 @@ import entity.Student;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @SessionAttributes(value = {"student4","student2"})//将request域中的对象放到session中 可以放多个
@@ -76,54 +81,55 @@ public class SpringMVChandler {
         System.out.println(student);
         return "success";
     }
+//
+//    @RequestMapping("testModelAndView")
+//    public ModelAndView testModelAndView(){
+//        ModelAndView mv = new ModelAndView();
+//        mv.setViewName("success");
+//        Address address = new Address("北京","西安");
+//        Student student = new Student(1,"ls",address);
+//
+//        //addObject 是key value对
+//        mv.addObject("student",student);//相当于request.setAttribute
+//        return mv;
+//    }
 
-    @RequestMapping("testModelAndView")
-    public ModelAndView testModelAndView(){
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("success");
-        Address address = new Address("北京","西安");
-        Student student = new Student(1,"ls",address);
+//    @RequestMapping("testModelMap")
+//    public String testModelMap(ModelMap m){
+//        Address address = new Address("北京","西安");
+//        Student student2 = new Student(1,"ls",address);
+//        m.addAttribute("student2",student2);
+//
+//        return "success";
+//    }
 
-        //addObject 是key value对
-        mv.addObject("student",student);//相当于request.setAttribute
-        return mv;
-    }
+//    @RequestMapping("testMap")
+//    public String testMap(Map<String,Object> m){
+//        Address address = new Address("北京","西安");
+//        Student student3 = new Student(1,"ls",address);
+//        m.put("student3",student3);
+//
+//        return "success";
+//    }
 
-    @RequestMapping("testModelMap")
-    public String testModelMap(ModelMap m){
-        Address address = new Address("北京","西安");
-        Student student2 = new Student(1,"ls",address);
-        m.addAttribute("student2",student2);
-
-        return "success";
-    }
-
-    @RequestMapping("testMap")
-    public String testMap(Map<String,Object> m){
-        Address address = new Address("北京","西安");
-        Student student3 = new Student(1,"ls",address);
-        m.put("student3",student3);
-
-        return "success";
-    }
-
-    @RequestMapping("testModel")
-    public String testModel(Model m){
-        Address address = new Address("北京","西安");
-        Student student4 = new Student(1,"ls",address);
-        m.addAttribute("student4",student4);
-
-        return "success";
-    }
+//    @RequestMapping("testModel")
+//    public String testModel(Model m){
+//        Address address = new Address("北京","西安");
+//        Student student4 = new Student(1,"ls",address,2018-1);
+//        m.addAttribute("student4",student4);
+//
+//        //请求转发forward:  重定向redirect:（修改地址栏地址  并且请求了两次）  不会自动添加前缀和后缀
+//        return "redirect:/views/success.jsp";
+//    }
 
 
-
-    @ModelAttribute//ModelAttribute思想 一个servlet对应一个功能  利用ModelAttribute可以插入一些功能
-    public void query(Map<String,Object> map){
-        Address address = new Address("北京","西安");
-        Student student0 = new Student(3,"zs",address);
-        map.put("student",student0);//约定：map的key 就是方法参数 类型的首字母小写
-    }
+//
+//    @ModelAttribute//ModelAttribute思想 一个servlet对应一个功能  利用ModelAttribute可以插入一些功能
+//    public void query(Map<String,Object> map){
+//        Address address = new Address("北京","西安");
+//        Student student0 = new Student(3,"zs",address);
+//        map.put("student",student0);//约定：map的key 就是方法参数 类型的首字母小写
+//    }
 
     //修改  如果有ModelAttribute  每次执行方法前 都先执行它
     @RequestMapping("testModelAttribute")
@@ -131,6 +137,42 @@ public class SpringMVChandler {
 
         System.out.println(student1);
         return "success";
+    }
+
+
+    @RequestMapping("testConverter")
+    public String testConverter(@RequestParam("StudentInfo") Student stu){//前端 2-ls
+
+        System.out.println(stu.getId()+","+stu.getName());
+        return "success";
+    }
+
+    @RequestMapping("testDateTimeFormat")
+    public String testDateTimeFormat(@Valid Student student, BindingResult result, Map<String,Object> map){//前端 2-ls
+
+        if (result.getErrorCount()>0){
+            for(FieldError error:result.getFieldErrors()){
+                System.out.println(error.getDefaultMessage());
+                map.put("cuowu",result.getFieldError());
+            }
+
+        }
+        System.out.println(student);
+        return "success";
+    }
+
+    @ResponseBody//告诉SpringMVC 这不是第一个view 而是ajax调用的一个对象
+    @RequestMapping("testJson")
+    public List<Student> testJson(){
+        //模拟Dao层
+        Student student =new Student(1,"ls");
+        Student student1 = new Student(2, "ww");
+        Student student2 = new Student(3, "zs");
+
+        List<Student> students=new ArrayList<>();
+        students.add(student);students.add(student1);students.add(student2);
+
+        return students;
     }
 
 }
