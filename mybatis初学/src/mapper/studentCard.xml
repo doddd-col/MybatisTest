@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mapper.studentCard">
-    <select id="querystudentCard" resultType="entity.StudentCard" parameterType="int">
-        select *from studentCard where cardid=#{id}
-    </select>
-</mapper>
