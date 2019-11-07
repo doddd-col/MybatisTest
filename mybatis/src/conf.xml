@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE configuration  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--  导入jdbc配置文件  灵活配置 -->
+    <properties resource="db.properties"/>
+
+    <!--log4j开启日志
+    <settings>
+        <setting name="LogImpl" value="LOG4J"/>
+    </settings>-->
+    <!--配置全局变量 尽量别动
+    <settings>
+        <setting name="cacheEnabled" value="false"/>
+    </settings>  -->
+<settings>
+    <!-- 开启延迟加载-->
+    <setting name="lazyLoadingEnabled" value="true"/>
+
+    <!-- 关闭立即加载-->
+    <setting name="aggressiveLazyLoading" value="false"/>
+
+    <!--开启二级缓存
+    <setting name="cacheEnabled" value="true"/>-->
+</settings>
+    <!--类型别名  不分大小写-->
+    <typeAliases>
+        <typeAlias type="entity.Student" alias="Student"/>
+        <typeAlias type="entity.Grade" alias="grade" />
+    <!--将指定包下的类别名全都变成 类名
+        <package name="entity"/>-->
+    </typeAliases>
+    <!--转换器-->
+    <typeHandlers>
+        <typeHandler handler="BooleanandIntConverter" javaType="Boolean" jdbcType="INTEGER" />
+    </typeHandlers>
+    <!--default 指定运行环境development -->
+    <environments default="development">
+
+        <environment id="development">
+            <!--jdbc类型 需要自己手动提交修改删除-->
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="entity/personMapper.xml"/>
+        <mapper resource="mapper/studentMapper.xml"/>
+        <mapper resource="mapper/studentCard.xml" />
+        <mapper resource="mapper/classMapper.xml" />
+    </mappers>
+</configuration>

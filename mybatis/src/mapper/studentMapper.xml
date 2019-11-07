@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="mapper.studentMapper">
+
+    <!--mybatis自带二级缓存开启方法   开启对缓存的支持 声明缓存 在maybatis3中  只需要在namespace中开启支持<cache />   不用在setting中开启缓存
+    <cache />-->
+
+    <!--开启Ehcache缓存-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache">
+        <!--可以在这里覆盖Ehcache里面的值-->
+    </cache>
+    <select id="querystudentBySno" resultType="Student" parameterType="int">
+         select * from student where sno = #{sno}
+         </select>
+
+    <insert id="addstudent" parameterType="Student">
+        insert into student(sno,name,age) values(#{sno},#{name},#{age})
+    </insert>
+
+    <update id="updatestudent" parameterType="Student">
+        update student set name=#{name},age=#{age} where sno=#{sno}
+    </update>
+
+    <delete id="deletestudent" parameterType="int">
+        delete from student where sno=#{sno}
+    </delete>
+    <select id="querystudentall" resultType="Student">
+        select * from student
+    </select>
+
+    <!--使用转换器
+        如果类和表的字段类型能够合理识别 用resulttype 比如类型转换用resultmap
+        如果名字字段不一样 也需要用resultmap进行配对
+    -->
+    <select id="querystudentBySnoWithConverter" resultMap="studentresult" parameterType="int">
+         select * from student where sno = #{sno}
+         </select>
+    <resultMap id="studentresult" type="Student">
+        <!--分为主键id 和非主键result-->
+        <id property="sno" column="sno" />
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" typeHandler="BooleanandIntConverter" />
+    </resultMap>
+
+    <insert id="addstudentWithConverter" parameterType="Student">
+        insert into student(sno,name,age,sex) values(#{sno},#{name},#{age},#{sex,typeHandler=BooleanandIntConverter})
+    </insert>
+
+    <select id="querystudentallWithConverter" resultMap="studentallresult">
+        select * from student
+    </select>
+    <resultMap id="studentallresult" type="Student">
+        <id property="sno" column="sno"/>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" typeHandler="BooleanandIntConverter" />
+    </resultMap>
+
+    <!--#{} 简单类型可以填任意值  ${} 简单类型必须填value (#{}自动添加''  ${}必须手动添加  )-->
+    <select id="querystudentByName" resultType="Student" parameterType="String">
+        select sno,name,age from student where name=#{name}
+    </select>
+    <!--${}适合动态查询  不需要加''    但是#{}可以防止sql注入-->
+    <select id="querystudentOrderByColumn" parameterType="String" resultType="Student">
+        select sno,name,age from student order by ${value} asc
+    </select>
+
+    <!--#{} 可以使用级联属性例如 address.homeaddress-->
+    <select id="querystudentByNameWithHashMap" parameterType="HashMap" resultType="Student">
+        select sno,name,age from student where name like '%${name}%' or sno = #{sno}
+    </select>
+
+    <!--通过存储过程 删除学生 存储过程基于现有的表   (sno in number)表示输入  deleteStuBysnoWithProceedure过程名称
+    create or replace procedure deleteStuBysnoWithProceedure(sno in number)
+    as
+    begin
+         delete from student where sno=sno;
+    end;
+    /
+
+    如果有输出 需要在sql 语句中  加入  into xxx
+    -->
+    <!--一般为  CALLABLE 类型--><!-- sno是参数  jdbcType参数类型 要找到java和jdbc映射的类型  mode是输入还是输出类型-->
+    <delete id="deleteStuBysnoWithProceedure" statementType="CALLABLE" parameterType="HashMap">
+        {
+            CALL deleteStuBysnoWithProceedure(
+                #{ss,jdbcType=INTEGER,mode=IN}
+            )
+        }
+    </delete>
+
+
+    <!--  可以用1=1 或者<where>标签处理（只能处理第一个and）  第一个and-->
+    <select id="querystudentByNameAndAgeWithSqlTag" resultType="Student" parameterType="Student">
+        select sno,name,age from student
+        <where>
+            <if test="name!=null and name !=''">
+                and name=#{name}
+            </if>
+            <if test="age!=null and age!=0">
+                and age=#{age}
+            </if>
+        </where>
+    </select>
+
+    <!--  foreach迭代  数组 集合 属性(类里面的List) 都可以迭代   属性对象-->
+    <select id="querystudentWithGrade" resultType="Student" parameterType="grade">
+        select sno,name,age from student
+        <where>
+            <if test="stunum!=null and stunum.size>0">
+                sno in (
+                <!--   collection是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数 要将item的参数放到#{}里面进行迭代而不是用grade属性里面的对象  也可以通过open和close来写左右两边语句-->
+                <foreach collection="stunum" separator="," item="grade">
+                    #{grade}
+                 </foreach>
+                 )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放入数组中 无论传递什么参数名 数组规定用array                                      数组-->
+    <select id="querystudentWithArray" resultType="Student" parameterType="int[]">
+        select sno,name,age from student
+        <where>
+            <if test="array!=null and array.length>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="array" separator="," item="g">
+                    #{g}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放入list中 无论传递什么参数名 list                                    list-->
+    <select id="querystudentWithList" resultType="Student" parameterType="list">
+        select sno,name,age from student
+        <where>
+            <if test="list!=null and list.size>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="list" separator="," item="sno">
+                    #{sno}
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <!--将多个元素放到对象数组 array是简单类型的  对象不能用   参数类型用对象或Object[]-->
+    <select id="querystudentWithStuArray" resultType="Student" parameterType="Student">
+        select sno,name,age from student
+        <include refid="objectarraylist"></include>
+    </select>
+
+    <!--sql标签   对重复的进行引用-->
+    <sql id="objectarraylist">
+        <where>
+            <if test="array!=null and array.length>0">
+                sno in (
+                <!--   collection 是需要迭代的集合或者数组 separator是分隔符 item用来迭代的参数  也可以通过open和close来写左右两边语句-->
+                <foreach collection="array" separator="," item="student">
+                    #{student.sno}
+                </foreach>
+                )
+            </if>
+        </where>
+    </sql>
+
+    <!--两张表进行关联  inner join 将两个表接在一起 on是关联关系   利用业务扩展类实现一对一-->
+    <select id="querystudentByBusiOO" resultType="entity.StudentBusiness" parameterType="int">
+        select s.*,c.* from student s inner join studentcard c
+        on s.cardid=c.cardid
+        where s.sno=#{sno}
+    </select>
+
+    <!--resultMap 实现一对一  两个类通过成员变量联系====  之前因为没把两个表拼接 所以cardinfo一直未null   -->
+    <select id="querystudentBysnoOO" resultMap="StudentCrad" parameterType="int">
+        select s.*,c.* from student s inner join studentcard c
+        on s.cardid=c.cardid
+        where s.sno=#{sno}
+    </select>
+
+    <resultMap id="StudentCrad" type="Student">
+        <!--学生信息  简单类型-->
+        <id property="sno" column="sno"></id>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+
+        <!--一对一，对象成员用association映射 ， JavaType指定该属性的类型-->
+        <association property="card" javaType="entity.StudentCard">
+            <id property="cardid" column="cardid" />
+            <result property="cardinfo" column="cardinfo" />
+        </association>
+    </resultMap>
+
+    <!--一对多-->
+    <select id="queryClassStudent" resultMap="class_student_map" parameterType="int">
+        select c.*,s.* from student s inner join studentclass c
+        on c.classid=s.classid
+        where c.classid=#{classid}
+    </select>
+    <resultMap id="class_student_map" type="entity.StudentClass">
+        <!--因为type的主类是班级 班级包含学生 所以先配置班级的信息 -->
+        <id property="classid" column="classid" />
+        <result property="classname" column="classname" />
+        <!--配置成员属性学生 ， 一对多； 属性类型：javaType  属性的元素类型：ofType-->
+        <collection property="studentList" ofType="Student">
+            <id property="sno" column="sno" />
+            <result property="name" column="name" />
+            <result property="age" column="age" />
+            <!--如果还有 对象可以接着配   因为没有card表所以cardinfo 一直未null  但是student有cardid所有一直有值-->
+            <association property="card" javaType="entity.StudentCard">
+                <id property="cardid" column="cardid" />
+                <result property="cardinfo" column="cardinfo" />
+            </association>
+        </collection>
+    </resultMap>
+
+    <select id="query" resultMap="card" parameterType="int">
+        select *from studentcard where cardid =#{sno}
+    </select>
+    <resultMap id="card" type="entity.StudentCard">
+        <id property="cardid" column="cardid" />
+        <result property="cardinfo" column="cardinfo" />
+    </resultMap>
+
+
+    <!--resultMap 实现一对一  两个类通过成员变量联系  延迟加载lazyload   记得要去conf.xml开启延迟加载 和 关闭立即加载-->
+    <select id="querystudentCardlazyload" resultMap="querystudentOOlazyload" parameterType="int">
+        select *from student where sno=#{sno}
+    </select>
+
+    <resultMap id="querystudentOOlazyload" type="Student">
+        <!--学生信息  简单类型-->
+        <id property="sno" column="sno"></id>
+        <result property="name" column="name" />
+        <result property="age" column="age" />
+        <result property="sex" column="sex" />
+
+        <!--一对一，对象成员用association映射 ， JavaType指定该属性的类型-->
+        <association property="card" javaType="entity.StudentCard" select="mapper.studentCard.querystudentCard" column="cardid">
+        <!--利用延迟加载 从studentCard调用select-->
+        </association>
+    </resultMap>
+
+    <!--一对多  延迟加载-->
+    <select id="queryStudents" resultType="Student" parameterType="int">
+        select *from student where classid=#{id}
+    </select>
+</mapper>
