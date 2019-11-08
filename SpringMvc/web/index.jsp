@@ -23,6 +23,7 @@
 </script>
 <html>
   <head>
+      <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
     <title>$Title$</title>
   </head>
   <body>
@@ -76,27 +77,43 @@
   <a href="handler/testModelMap">testModelMap</a>
   <a href="handler/testMap">testMap</a>
   <a href="handler/testModel">testModel</a>
-  </body>
+
+  <a href="handler/testArithmeticException">testArithmeticException</a>
+
+  <a href="handler/testExceptionStatus?i=3">testExceptionStatus</a>
+
 
   <form action="/SpringMvc_war_exploded/handler/testModelAttribute" method="post" >
-    id:<input type="hidden" name="id" value="3" />
-    name:<input type="text" name="name" />
-    <input type="submit" value="ModelAttribute" />
+      id:<input type="hidden" name="id" value="3" />
+      name:<input type="text" name="name" />
+      <input type="submit" value="ModelAttribute" />
   </form>
 
   <a href="handler/testMvcViewController">testMvcController</a>
 
 
   <form action="/SpringMvc_war_exploded/handler/testConverter" method="post" >
-    学生信息:<input type="text" name="StudentInfo"/>
-    <input type="submit" value="testConverter" />
+      学生信息:<input type="text" name="StudentInfo"/>
+      <input type="submit" value="testConverter" />
   </form>
 
 
-  <form action="/SpringMvc_war_exploded/handler/testDateTimeFormat" method="post" >
-    ID:<input type="text" name="id"/>
-    姓名:<input name="name">
-    生日:<input name="birthday">
-    <input type="submit" value="testDateTimeFormat" />
+  <form action="/SpringMvc_war_exploded/handler/testDateTimeFormat" method="post">
+      ID:<input type="text" name="id"/>
+      姓名:<input name="name">
+      生日:<input name="birthday">
+      <input type="submit" value="testDateTimeFormat" />
   </form>
+
+
+  <form action="/SpringMvc_war_exploded/handler/testUpload" method="post" enctype="multipart/form-data">
+      文件上传:<input type="file" name="file"/>
+      描述信息:<input name="desc"/>
+      <input type="submit" value="testUpload" />
+  </form>
+
+
+  </body>
+
+
 </html>

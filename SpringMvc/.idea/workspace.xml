@@ -34,22 +34,22 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Problems" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="File.Encoding" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="F:\SpringProject\SpringMvc\src" />
+      <recent name="F:\SpringProject\SpringMvc\web" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\SpringProject\SpringMvc\lib" />
       <recent name="F:\SpringProject\SpringMvc\jsonlib" />
       <recent name="F:\SpringProject\SpringMvc\web\js" />
       <recent name="F:\SpringProject\SpringMvc\hibernate" />
       <recent name="F:\SpringProject\SpringMvc\web\WEB-INF" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="F:\SpringProject\SpringMvc\src" />
-      <recent name="F:\SpringProject\SpringMvc\web" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -65,8 +65,54 @@
     </option>
   </component>
   <component name="RunManager" selected="Tomcat Server.index.jsp">
+    <configuration name="test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="test" />
+      <module name="SpringMvc" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="index.form" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:8080/SpringMvc_war_exploded/index.form">
       <method v="2" />
+    </configuration>
+    <configuration name="index.jsp (1)" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" temporary="true" APPLICATION_SERVER_NAME="tomcat-9.0.27" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/index.jsp" />
+      <deployment>
+        <artifact name="SpringMvc:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/SpringMvc_war_exploded" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="index_jsp_(1)_SpringMvc" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="SpringMvc:war exploded" />
+        </option>
+      </method>
     </configuration>
     <configuration name="index.jsp" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" temporary="true" APPLICATION_SERVER_NAME="tomcat-9.0.27" ALTERNATIVE_JRE_ENABLED="false">
       <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/SpringMvc_war_exploded/index.jsp" />
@@ -258,14 +304,18 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.test" />
       <item itemvalue="JavaScript Debug.index.form" />
       <item itemvalue="Tomcat Server.tomcat-9.0.27" />
       <item itemvalue="Tomcat Server.index.jsp" />
       <item itemvalue="Tomcat Server.registered.jsp" />
+      <item itemvalue="Tomcat Server.index.jsp (1)" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Tomcat Server.index.jsp" />
+        <item itemvalue="Tomcat Server.index.jsp (1)" />
+        <item itemvalue="Application.test" />
         <item itemvalue="Tomcat Server.registered.jsp" />
         <item itemvalue="JavaScript Debug.index.form" />
       </list>
@@ -284,11 +334,23 @@
       <workItem from="1572864235146" duration="4309000" />
       <workItem from="1572921466247" duration="13336000" />
       <workItem from="1573006651841" duration="14817000" />
-      <workItem from="1573093246128" duration="12297000" />
+      <workItem from="1573093246128" duration="19289000" />
+      <workItem from="1573183220524" duration="9346000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -14,6 +14,7 @@
           <element id="library" level="project" name="hibernate-validator-annotation-processor-6.1.0.Final" />
           <element id="library" level="project" name="jstl-1.2" />
           <element id="library" level="project" name="jackson-annotations-2.8.9" />
+          <element id="library" level="project" name="commons-fileupload-1.3.3" />
         </element>
       </element>
     </root>
