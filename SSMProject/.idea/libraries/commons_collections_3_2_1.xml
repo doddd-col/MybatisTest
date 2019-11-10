@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="commons-collections-3.2.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/web/libs/dbcp连接池/commons-collections-3.2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/libs/dbcp连接池/commons-pool2-2.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/libs/dbcp连接池/commons-dbcp2-2.7.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/web/libs/dbcp连接池/commons-logging.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

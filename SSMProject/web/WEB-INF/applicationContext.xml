@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+        <!--在Spring中整合Mybatis (即将SqlSessionFactory交给Spring管理)-->
+        <!--Mybatis的config.xml可以省略，在Spring配置文件中配置   config.xml:数据源(datasource),mapper.xml-->
+
+    <!--引入db.properties-->
+    <bean id="config" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+        <property name="Locations">
+            <value>
+                classpath:db.properties
+            </value>
+        </property>
+    </bean>
+
+    <!--配置数据源-->
+    <bean id="datasource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${driverClassName}" />
+        <property name="url" value="${url}" />
+        <property name="username" value="${username}" />
+        <property name="password" value="${password}" />
+        <!--maxTotal 最大连接数   maxIdle 最大空闲数：即使没人使用也能保持200个连接-->
+        <property name="maxTotal" value="${maxTotal}" />
+        <property name="maxIdle" value="${maxIdle}" />
+    </bean>
+
+    <!--将SqlSessionFactory配置到Spring-->
+    <bean id="SqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource" />
+        <!--mapperLocations是扫描创建的mapper.xml-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml" />
+        <!--将该包下的类名变成变成别名  不需要写全类名-->
+        <property name="typeAliasesPackage" value="entity">
+        </property>
+    </bean>
+
+    <!--批量产生多个mapper 每个mapper在SpringIOC容器中的ID默认就是接口名  (但是首字母小写)-->
+    <bean id="mappers" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定扫描的包-->
+        <property name="basePackage" value="mapper" />
+        <!--sqlSessionFactoryBeanName的返回值是字符串 所以用value-->
+        <property name="sqlSessionFactoryBeanName" value="SqlSessionFactory" />
+    </bean>
+
+    <!--扫描有注解的包-->
+    <context:component-scan base-package="mapper,service" />
+</beans>
