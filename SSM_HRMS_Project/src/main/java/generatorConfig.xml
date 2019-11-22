@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+<!--        不生成注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="oracle.jdbc.OracleDriver"
+                        connectionURL="jdbc:oracle:thin:@localhost:1521:XE"
+                        userId="system"
+                        password="123456">
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+<!--        javaBean-->
+        <javaModelGenerator targetPackage="com.hrms.bean" targetProject=".\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+<!--        mapper.xml 映射文件-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject=".\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+<!--        mapper接口-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.hrms.mapper"  targetProject=".\src\main\java\">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+<!--        table对应的每个表的生成策略-->
+        <table tableName="tbl_emp2" domainObjectName="Employee" />
+        <table tableName="tbl_dept2" domainObjectName="Department" />
+    </context>
+</generatorConfiguration>
